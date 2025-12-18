@@ -62,9 +62,12 @@ def scan_directory(root_dir):
                     if os.path.isfile(file_path) and not file_item.startswith('.'):
                         file_type = get_file_type(file_item)
                         
+                        # Path should be relative to the site root (the `docs/` folder
+                        # is used by GitHub Pages as the site root). Store paths like
+                        # "<folder>/<file>" so they resolve correctly when served.
                         file_data = {
                             'name': file_item,
-                            'path': f"docs/docs/{item}/{file_item}",
+                            'path': f"{item}/{file_item}",
                             'type': file_type,
                             'size': os.path.getsize(file_path)
                         }

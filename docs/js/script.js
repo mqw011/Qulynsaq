@@ -239,18 +239,21 @@ document.addEventListener('DOMContentLoaded', function() {
         imageViewer.style.display = 'none';
         unsupportedViewer.style.display = 'none';
         
-        // Настраиваем ссылку для скачивания
-        downloadLink.href = encodeURI(file.path);
+        // Настраиваем ссылку для скачивания — удаляем лишний префикс `docs/`
+        // если он случайно попал в `documents.json`, чтобы путь был
+        // относительный от корня сайта.
+        const fileUrl = encodeURI(file.path.replace(/^docs\//, ''));
+        downloadLink.href = fileUrl;
         downloadLink.download = file.name;
         
         // В зависимости от типа файла показываем соответствующий вьювер
         if (file.type === 'pdf') {
             // Для PDF используем iframe
-            pdfViewer.src = encodeURI(file.path);
+            pdfViewer.src = fileUrl;
             pdfViewer.style.display = 'block';
         } else if (file.type === 'image') {
             // Для изображений используем img
-            imageViewer.src = encodeURI(file.path);
+            imageViewer.src = fileUrl;
             imageViewer.alt = file.name;
             imageViewer.style.display = 'block';
         } else {
